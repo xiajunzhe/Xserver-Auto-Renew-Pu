@@ -108,15 +108,6 @@ jobs:
         run: |
           echo "🚀 启动XServer GAME完全自动化登录流程 (多账户版)..."
           python main.py
-          
-      - name: 📝 提交README.md到仓库
-        if: always()
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add README.md
-          # 如果 README.md 有变化，则提交并强行推送，彻底解决冲突拒绝问题
-          git diff --staged --quiet || (git commit -m "📊 自动更新续期状态报告 [$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')]" && git push -f origin HEAD:${{ github.ref_name }})
 
       - name: 📸 上传运行结果
         if: always()
