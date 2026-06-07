@@ -115,13 +115,8 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add README.md
-          if ! git diff --staged --quiet; then
-            git commit -m "📊 自动更新续期状态报告 [$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')]"
-            # 👇 核心改动：在 push 之前先拉取远程最新更改，防止多账号多次运行冲突
-            git pull origin HEAD:${{ github.ref_name }} --rebase
-            git push origin HEAD:${{ github.ref_name }}
-          fi
-
+          # 如果 README.md 有变化，则提交并强行推送，彻底解决冲突拒绝问题
+          git diff --staged --quiet || (git commit -m "📊 自动更新续期状态报告 [$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M:%S')]" && git push -f origin HEAD:${{ github.ref_name }})
 
       - name: 📸 上传运行结果
         if: always()
